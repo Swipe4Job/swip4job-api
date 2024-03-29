@@ -22,7 +22,7 @@ import { CandidateCV } from '../../domain/CandidateCV';
 import { CandidateCVId } from '../../domain/CandidateCVId';
 import { CandidateDescription } from '../../domain/CandidateDescription';
 import { Study } from '../../domain/Studies';
-import { SoftSkills } from '../../../offer/domain/SoftSkills';
+import { SoftSkill } from '../../../offer/domain/SoftSkill';
 import { CandidateName } from '../../domain/CandidateName';
 import { CandidateLastName } from '../../domain/CandidateLastName';
 import { CandidateLocation } from '../../domain/CandidateLocation';
@@ -43,7 +43,7 @@ export class CompanyController {
 
   //read
   @Get()
-  async getCandidates(@Query('criteria') encodedCriteria: string) {
+  async getCandidateCVs(@Query('criteria') encodedCriteria: string) {
     const candidateCriteria = encodedCriteria
       ? CandidateCVCriteria.fromCriteria(
           this.criteriaCodec.decode(encodedCriteria),
@@ -56,13 +56,13 @@ export class CompanyController {
   }
   //create --> en general todo canviar register per create
   @Post('')
-  async registerCandidate(@Body() body: CandidateRegisterDTO) {
+  async createCandidateCV(@Body() body: CandidateRegisterDTO) {
     await this.candidateRegister.run(body);
     return HttpResponse.success('Candidate created successfully');
   }
 
   @Put(':id')
-  async updateCandidate(
+  async updateCandidateCV(
     @Body() body: CandidateRegisterDTO,
     @Param('id') id: string,
   ) {
@@ -71,7 +71,7 @@ export class CompanyController {
       candidateId: new UserId(body.candidateId),
       description: new CandidateDescription(body.description),
       studies: new Array<Study>(), //todo no se com cony cridar tot el tema de arrays aqui ni del set pero aixi no peta xd
-      softSkills: new Set<SoftSkills>(),
+      softSkills: new Set<SoftSkill>(),
       name: new CandidateName(body.name),
       lastname: new CandidateLastName(body.lastname),
       location: new CandidateLocation(body.location),
@@ -82,7 +82,7 @@ export class CompanyController {
   }
 
   @Delete()
-  async deleteCandidate(@Query('criteria') encodedCriteria: string) {
+  async deleteCandidateCV(@Query('criteria') encodedCriteria: string) {
     const candidateCriteria = encodedCriteria
       ? CandidateCVCriteria.fromCriteria(
           this.criteriaCodec.decode(encodedCriteria),

@@ -20,7 +20,7 @@ export class CandidateRegisterDTO {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  softSkills!: Set<string>;
+  softSkills!: Array<string>;
 
   @ApiProperty()
   @IsOptional()

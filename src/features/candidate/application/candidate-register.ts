@@ -6,6 +6,7 @@ import { Orders } from '@zertifier/criteria/dist/Orders';
 import { CandidateCVCriteria } from '../domain/CandidateCVCriteria';
 import { CandidateCV } from '../domain/CandidateCV';
 import { UnexpectedError } from '../../../shared/domain/ApplicationError/UnexpectedError';
+import { SoftSkill } from '../../offer/domain/SoftSkill';
 
 @Injectable()
 export class CandidateRegister {
@@ -15,7 +16,7 @@ export class CandidateRegister {
     candidateId: string;
     description: string;
     studies: Array<string>;
-    softSkills: Set<string>;
+    softSkills: Array<string>;
     name: string;
     lastname: string;
     location: string;
@@ -25,13 +26,13 @@ export class CandidateRegister {
     const candidate = await CandidateCV.create({
       candidateId: params.candidateId,
       description: params.description,
-      studies: new Array<string>(),
-      softSkills: new Set<string>(),
+      studies: params.studies,
+      softSkills: params.softSkills,
       name: params.name,
       lastname: params.lastname,
       location: params.location,
-      languages: new Array<string>(),
-      jobExperiences: new Array<string>(),
+      languages: params.languages,
+      jobExperiences: params.jobExperiences,
     });
     const criteria = new CandidateCVCriteria({
       filters: Filters.create([

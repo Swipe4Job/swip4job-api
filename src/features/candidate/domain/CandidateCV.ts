@@ -1,7 +1,7 @@
 import { Study } from './Studies';
 import { LanguageSkill } from './LanguageSkill';
 import { JobExperience } from './JobExperience';
-import { SoftSkills } from '../../offer/domain/SoftSkills';
+import { SoftSkill } from '../../offer/domain/SoftSkill';
 import { Serializer } from '../../../shared/domain/Serializer';
 import { CandidateCVId } from './CandidateCVId';
 import { UserId } from '../../users/domain/UserID/UserId';
@@ -16,7 +16,7 @@ export class CandidateCV implements Serializer {
     candidateId: UserId;
     description: CandidateDescription;
     studies: Array<Study>;
-    softSkills: Set<SoftSkills>;
+    softSkills: Set<SoftSkill>;
     name: CandidateName;
     lastname: CandidateLastName;
     location: CandidateLocation;
@@ -59,9 +59,9 @@ export class CandidateCV implements Serializer {
     return this._studies;
   }
 
-  private _softSkills: Set<SoftSkills>;
+  private _softSkills: Set<SoftSkill>;
 
-  get softSkills(): Set<SoftSkills> {
+  get softSkills(): Set<SoftSkill> {
     return this._softSkills;
   }
 
@@ -115,7 +115,7 @@ export class CandidateCV implements Serializer {
     return this;
   }
 
-  withSoftskills(value: Set<SoftSkills>) {
+  withSoftskills(value: Set<SoftSkill>) {
     this._softSkills = value;
     return this;
   }
@@ -148,7 +148,7 @@ export class CandidateCV implements Serializer {
     candidateId: string;
     description: string;
     studies: Array<string>;
-    softSkills: Set<string>;
+    softSkills: Array<string>;
     name: string;
     lastname: string;
     location: string;
@@ -160,7 +160,9 @@ export class CandidateCV implements Serializer {
       candidateId: new UserId(params.candidateId),
       description: new CandidateDescription(params.description),
       studies: new Array<Study>(),
-      softSkills: new Set<SoftSkills>(),
+      softSkills: new Set<SoftSkill>(
+        params.softSkills.map((s) => SoftSkill.from(s)),
+      ),
       name: new CandidateName(params.name),
       lastname: new CandidateLastName(params.name),
       location: new CandidateLocation(params.location),
