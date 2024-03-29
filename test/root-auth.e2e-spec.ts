@@ -5,7 +5,6 @@ import { AppModule } from '../src/core/app.module';
 import { User } from '../src/features/users/domain/User';
 import { UserId } from '../src/features/users/domain/UserID/UserId';
 import { UserRole } from '../src/features/users/domain/UserRole';
-import { WalletAddress } from '../src/shared/domain/WalletAddress/WalletAddress';
 import { UserPassword } from '../src/features/users/domain/UserPassword';
 import { PhoneNumber } from '../src/features/users/domain/PhoneNumber/PhoneNumber';
 import { UserEmail } from '../src/features/users/domain/UserEmail/UserEmail';
@@ -18,7 +17,6 @@ import { UserAuthToken } from '../src/features/auth/domain/users/UserAuthToken';
 import { UserLastName } from '../src/features/users/domain/UserLastName';
 
 describe('RootAuthController', () => {
-  const wallet = ethers.Wallet.createRandom();
   let app: INestApplication;
   let jwtService: JWTService;
 
