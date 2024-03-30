@@ -95,6 +95,65 @@ export class CandidateCV implements Serializer {
     return this._jobExperiences;
   }
 
+  public static async create(params: {
+    candidateId: string;
+    description: string;
+    studies: Array<{
+      name: string;
+      school: string;
+      startDate: string;
+      endDate?: string;
+    }>;
+    softSkills: Array<string>;
+    name: string;
+    lastname: string;
+    location: string;
+    languages: Array<{
+      language: string;
+      level: string;
+      academicTitle?: string;
+    }>;
+    jobExperiences: Array<{
+      position: string;
+      company: string;
+      description: string;
+      startDate: string;
+      endDate?: string;
+    }>;
+  }) {
+    return new CandidateCV({
+      id: CandidateCVId.random(),
+      candidateId: new UserId(params.candidateId),
+      description: new CandidateDescription(params.description),
+      studies: params.studies.map(
+        (s) =>
+          new Study({
+            name: s.name,
+            school: s.school,
+            startDate: new Date(s.startDate),
+            endDate: s.endDate ? new Date(s.endDate) : undefined,
+          }),
+      ),
+      softSkills: new Set<SoftSkill>(
+        params.softSkills.map((s) => SoftSkill.from(s)),
+      ),
+      name: new CandidateName(params.name),
+      lastname: new CandidateLastName(params.name),
+      location: new CandidateLocation(params.location),
+      languages: params.languages.map((l) => new LanguageSkill(l)),
+      jobExperiences: params.jobExperiences.map(
+        (j) =>
+          new JobExperience({
+            position: j.position,
+            endDate: j.endDate ? new Date(j.endDate) : undefined,
+            startDate: new Date(j.startDate),
+            description: j.description,
+            company: j.company,
+          }),
+      ),
+    });
+  }
+
   withCandidateId(value: UserId) {
     this._candidateId = value;
     return this;
@@ -144,32 +203,6 @@ export class CandidateCV implements Serializer {
     this._jobExperiences = value;
     return this;
   }
-  public static async create(params: {
-    candidateId: string;
-    description: string;
-    studies: Array<string>;
-    softSkills: Array<string>;
-    name: string;
-    lastname: string;
-    location: string;
-    languages: Array<string>;
-    jobExperiences: Array<string>;
-  }) {
-    return new CandidateCV({
-      id: CandidateCVId.random(),
-      candidateId: new UserId(params.candidateId),
-      description: new CandidateDescription(params.description),
-      studies: new Array<Study>(),
-      softSkills: new Set<SoftSkill>(
-        params.softSkills.map((s) => SoftSkill.from(s)),
-      ),
-      name: new CandidateName(params.name),
-      lastname: new CandidateLastName(params.name),
-      location: new CandidateLocation(params.location),
-      languages: new Array<LanguageSkill>(),
-      jobExperiences: new Array<JobExperience>(),
-    });
-  }
 
   serialize() {
     return {
@@ -183,6 +216,7 @@ export class CandidateCV implements Serializer {
       softSkills: Array.from(this.softSkills).map((s) => s.value),
     }; //aquest es el meu modificat per si no es pot tocar i es fa de una altre manera
   }
+
   // serialize() {
   //   return {
   //     languages: this.languages.map((l) => l.serialize()),

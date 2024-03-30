@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class CandidateRegisterDTO {
   @ApiProperty()
@@ -15,7 +16,9 @@ export class CandidateRegisterDTO {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  studies!: Array<string>;
+  @ValidateNested({ each: true })
+  @Type(() => StudyDTO)
+  studies!: Array<StudyDTO>;
 
   @ApiProperty()
   @IsString()
@@ -39,10 +42,74 @@ export class CandidateRegisterDTO {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  languages!: Array<string>;
+  @ValidateNested({ each: true })
+  @Type(() => LanguageDTO)
+  languages!: Array<LanguageDTO>;
 
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  jobExperiences!: Array<string>;
+  @ValidateNested({ each: true })
+  @Type(() => JobExperienceDTO)
+  jobExperiences!: Array<JobExperienceDTO>;
+}
+
+export class LanguageDTO {
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
+  language!: string;
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
+  level!: string;
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
+  academicTitle!: string;
+}
+
+export class JobExperienceDTO {
+  @IsString()
+  @ApiProperty()
+  @IsNotEmpty()
+  position!: string;
+  @IsString()
+  @ApiProperty()
+  @IsNotEmpty()
+  company!: string;
+  @IsString()
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsOptional()
+  description?: string;
+  @IsString()
+  @ApiProperty()
+  @IsNotEmpty()
+  startDate!: string;
+  @IsString()
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsOptional()
+  endDate?: string;
+}
+
+export class StudyDTO {
+  @IsString()
+  @ApiProperty()
+  @IsNotEmpty()
+  name!: string;
+  @IsNotEmpty()
+  @IsString()
+  @ApiProperty()
+  school!: string;
+  @IsNotEmpty()
+  @IsString()
+  @ApiProperty()
+  startDate!: string;
+  @IsNotEmpty()
+  @IsString()
+  @IsOptional()
+  @ApiProperty({ required: false })
+  endDate?: string;
 }

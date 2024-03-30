@@ -34,7 +34,7 @@ import { CandidateCVCriteria } from '../../domain/CandidateCVCriteria';
 @Controller('candidate')
 export class CompanyController {
   constructor(
-    private candidateRegister: CandidateRegister,
+    private candidateCVCreate: CandidateRegister,
     private criteriaCodec: CriteriaCodec,
     private listCandidates: CandidateList,
     private candidateUpdate: CandidateUpdate,
@@ -54,10 +54,11 @@ export class CompanyController {
       candidates.map((candidate) => new CandidateListResponseDTO(candidate)),
     );
   }
-  //create --> en general todo canviar register per create
+
+  //create --> en general
   @Post('')
   async createCandidateCV(@Body() body: CandidateRegisterDTO) {
-    await this.candidateRegister.run(body);
+    await this.candidateCVCreate.run(body);
     return HttpResponse.success('Candidate created successfully');
   }
 
@@ -70,13 +71,32 @@ export class CompanyController {
       id: new CandidateCVId(id),
       candidateId: new UserId(body.candidateId),
       description: new CandidateDescription(body.description),
-      studies: new Array<Study>(), //todo no se com cony cridar tot el tema de arrays aqui ni del set pero aixi no peta xd
-      softSkills: new Set<SoftSkill>(),
+      studies: body.studies.map(
+        (s) =>
+          new Study({
+            name: s.name,
+            school: s.school,
+            startDate: new Date(s.startDate),
+            endDate: s.endDate ? new Date(s.endDate) : undefined,
+          }),
+      ),
+      softSkills: new Set<SoftSkill>(
+        body.softSkills.map((s) => SoftSkill.from(s)),
+      ),
       name: new CandidateName(body.name),
       lastname: new CandidateLastName(body.lastname),
       location: new CandidateLocation(body.location),
-      languages: new Array<LanguageSkill>(),
-      jobExperiences: new Array<JobExperience>(),
+      languages: body.languages.map((l) => new LanguageSkill(l)),
+      jobExperiences: body.jobExperiences.map(
+        (j) =>
+          new JobExperience({
+            company: j.company,
+            startDate: new Date(j.startDate),
+            endDate: j.endDate ? new Date(j.endDate) : undefined,
+            description: j.description || '',
+            position: j.position,
+          }),
+      ),
     });
     await this.candidateUpdate.run(candidate);
   }
