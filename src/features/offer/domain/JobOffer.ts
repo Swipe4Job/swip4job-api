@@ -5,6 +5,7 @@ import { SalaryRange } from './SalaryRange';
 import { JobOfferId } from './JobOfferId';
 import { UserId } from '../../users/domain/UserID/UserId';
 import { JobOfferLocation } from './JobOfferLocation';
+import { SoftSkill } from './SoftSkill';
 
 export class JobOffer {
   constructor(params: {
@@ -34,7 +35,7 @@ export class JobOffer {
     this._requirements = params.requirements;
     this._jobType = JobType.from(params.jobType);
     this._workingDay = WorkingDay.from(params.workingDay);
-    this._skills = params.skills;
+    this._skills = params.skills.map(SoftSkill.from);
     this._workingHours = params.workingHours;
     this._departmentOrganisation = params.departmentOrganisation;
     this._publicationDate = params.publicationDate;
@@ -113,10 +114,10 @@ export class JobOffer {
     return this._workingDay.value;
   }
 
-  private _skills: string[];
+  private _skills: SoftSkill[];
 
   get skills(): string[] {
-    return this._skills;
+    return this._skills.map((s) => s.value);
   }
 
   private _salaryRange: SalaryRange;
@@ -194,7 +195,7 @@ export class JobOffer {
   }
 
   withSkills(value: string[]) {
-    this._skills = value;
+    this._skills = value.map((s) => SoftSkill.from(s));
     return this;
   }
 
