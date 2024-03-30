@@ -4,28 +4,9 @@ import { WorkingDay } from './WorkingDay';
 import { SalaryRange } from './SalaryRange';
 import { JobOfferId } from './JobOfferId';
 import { UserId } from '../../users/domain/UserID/UserId';
+import { JobOfferLocation } from './JobOfferLocation';
 
 export class JobOffer {
-  private _id: JobOfferId;
-
-  get id(): string {
-    return this._id.value;
-  }
-  withId(id: string) {
-    this._id = new JobOfferId(id);
-    return this;
-  }
-
-  private _recuireterId: UserId;
-  get recruiterId(): string {
-    return this._recuireterId.value;
-  }
-
-  withRecruiterId(id: UserId): JobOffer {
-    this._recuireterId = id;
-    return this;
-  }
-
   constructor(params: {
     title: string;
     recruiterId: string;
@@ -41,9 +22,10 @@ export class JobOffer {
     workingHours: string;
     departmentOrganisation: string;
     publicationDate: Date;
+    location: string;
   }) {
     this._id = JobOfferId.random();
-    this._recuireterId = new UserId(params.recruiterId);
+    this._recruiterId = new UserId(params.recruiterId);
     this._title = params.title;
     this._companyName = params.companyName;
     this._contractType = ContractType.from(params.contractType);
@@ -57,6 +39,30 @@ export class JobOffer {
     this._departmentOrganisation = params.departmentOrganisation;
     this._publicationDate = params.publicationDate;
     this._salaryRange = SalaryRange.from(params.salaryRange);
+    this._location = new JobOfferLocation(params.location);
+  }
+
+  private _id: JobOfferId;
+
+  get id(): string {
+    return this._id.value;
+  }
+
+  private _location: JobOfferLocation;
+
+  get location(): JobOfferLocation {
+    return this._location;
+  }
+
+  withLocation(value: JobOfferLocation) {
+    this._location = value;
+    return this;
+  }
+
+  private _recruiterId: UserId;
+
+  get recruiterId(): UserId {
+    return this._recruiterId;
   }
 
   private _title: string;
@@ -137,6 +143,16 @@ export class JobOffer {
     return this._publicationDate;
   }
 
+  withRecruiterId(value: UserId) {
+    this._recruiterId = value;
+    return this;
+  }
+
+  withId(id: string) {
+    this._id = new JobOfferId(id);
+    return this;
+  }
+
   withTitle(value: string) {
     this._title = value;
     return this;
@@ -209,6 +225,7 @@ export class JobOffer {
       companyName: this.companyName,
       description: this.description,
       responsabilities: this.responsibilities,
+      location: this.location.value,
       requirements: this.requirements,
       jobType: this.jobType,
       contractType: this.contractType,
@@ -218,7 +235,7 @@ export class JobOffer {
       workingHours: this.workingHours,
       departmentOrganization: this.departmentOrganisation,
       publicationDate: this.publicationDate,
-      recruiterId: this.recruiterId,
+      recruiterId: this.recruiterId.value,
     };
   }
 }

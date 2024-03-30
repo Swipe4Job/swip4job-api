@@ -76,6 +76,7 @@ model Offer {
   publicationDate        DateTime
   recruiter              User     @relation(fields: [recruiterId], references: [id])
   recruiterId            String
+  location               String
 
   @@map("offers")
 }

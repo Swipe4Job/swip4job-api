@@ -79,6 +79,7 @@ export class PrismaJobOfferRepository implements JobOfferRepository {
           publicationDate: r.publicationDate,
           workingDay: r.workingDay,
           recruiterId: r.recruiterId,
+          location: r.location,
         }),
     );
   }
