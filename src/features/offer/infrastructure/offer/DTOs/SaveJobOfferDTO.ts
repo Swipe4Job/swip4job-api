@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsDate, IsString } from 'class-validator';
+import { IsArray, IsNotEmpty, IsString } from 'class-validator';
 
 export class SaveJobOfferDTO {
   @ApiProperty()
@@ -41,6 +41,11 @@ export class SaveJobOfferDTO {
   @ApiProperty()
   @IsArray()
   skills!: string[];
+
+  @IsString()
+  @ApiProperty()
+  @IsNotEmpty()
+  location!: string;
 
   @ApiProperty()
   @IsString()
