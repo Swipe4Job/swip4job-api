@@ -7,11 +7,15 @@ import { PrismaCriteriaService } from '../../../../../shared/infrastructure/serv
 import { UserId } from '../../../../users/domain/UserID/UserId';
 import { CandidateCVId } from '../../../domain/CandidateCVId';
 import { Study } from '../../../domain/Studies';
-import { SoftSkills } from '../../../../offer/domain/SoftSkills';
+import { SoftSkill } from '../../../../offer/domain/SoftSkill';
 import { JobExperience } from '../../../domain/JobExperience';
 import { LanguageSkill } from '../../../domain/LanguageSkill';
 import { BadRequestError } from '../../../../../shared/domain/ApplicationError/BadRequestError';
 import { ByCandidateCVId } from '../../../domain/ByCandidateCVId';
+import { CandidateName } from '../../../domain/CandidateName';
+import { CandidateLocation } from '../../../domain/CandidateLocation';
+import { CandidateLastName } from '../../../domain/CandidateLastName';
+import { CandidateDescription } from '../../../domain/CandidateDescription';
 
 @Injectable()
 export class PrismaCandidateCvRepository implements CandidateCVRepository {
@@ -39,13 +43,13 @@ export class PrismaCandidateCvRepository implements CandidateCVRepository {
       await this.prismaProvider.candidateCV.updateMany({
         data: {
           candidateId: cv.candidateId.value,
-          description: cv.description,
+          description: cv.description.value,
           softSkills: JSON.stringify(
             Array.from(cv.softSkills).map((s) => s.value),
           ),
-          name: cv.name,
-          lastname: cv.lastname,
-          location: cv.location,
+          name: cv.name.value,
+          lastname: cv.lastname.value,
+          location: cv.location.value,
           studies: JSON.stringify(cv.studies),
           languages: JSON.stringify(cv.languages.map((l) => l.serialize())),
           jobExperiences: JSON.stringify(
@@ -60,13 +64,13 @@ export class PrismaCandidateCvRepository implements CandidateCVRepository {
       await this.prismaProvider.candidateCV.createMany({
         data: {
           candidateId: cv.candidateId.value,
-          description: cv.description,
+          description: cv.description.value,
           softSkills: JSON.stringify(
             Array.from(cv.softSkills).map((s) => s.value),
           ),
-          name: cv.name,
-          lastname: cv.lastname,
-          location: cv.location,
+          name: cv.name.value,
+          lastname: cv.lastname.value,
+          location: cv.location.value,
           studies: JSON.stringify(cv.studies),
           languages: JSON.stringify(cv.languages.map((l) => l.serialize())),
           jobExperiences: JSON.stringify(
@@ -95,15 +99,15 @@ export class PrismaCandidateCvRepository implements CandidateCVRepository {
       return new CandidateCV({
         candidateId: new UserId(r.candidateId),
         id: new CandidateCVId(r.id),
-        name: r.name,
-        lastname: r.lastname,
-        location: r.location,
+        name: new CandidateName(r.name),
+        lastname: new CandidateLastName(r.lastname),
+        location: new CandidateLocation(r.location),
         studies: (JSON.parse(r.studies) as any[]).map((s) =>
           Study.fromJSONString(s),
         ),
-        description: r.description,
+        description: new CandidateDescription(r.description),
         softSkills: new Set(
-          (JSON.parse(r.softSkills) as string[]).map((s) => SoftSkills.from(s)),
+          (JSON.parse(r.softSkills) as string[]).map((s) => SoftSkill.from(s)),
         ),
         jobExperiences: (JSON.parse(r.jobExperiences) as any[]).map((j) =>
           JobExperience.formJSON(j),
