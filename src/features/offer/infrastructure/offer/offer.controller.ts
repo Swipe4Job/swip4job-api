@@ -19,12 +19,7 @@ import { ByJobOfferId } from '../../domain/ByJobOfferId';
 import { ApiTags } from '@nestjs/swagger';
 
 function formatJobOffer(offer: JobOffer) {
-  return {
-    ...offer.serialize(),
-    publicationDate: moment(offer.serialize().publicationDate).format(
-      'YYYY-MM-DD HH:mm',
-    ),
-  };
+  return offer.serialize();
 }
 
 @ApiTags('offer')
@@ -51,10 +46,7 @@ export class OfferController {
   async saveOffer(@Body() body: SaveJobOfferDTO) {
     const offer = new JobOffer({
       ...body,
-      publicationDate: moment(
-        body.publicationDate,
-        'YYYY-MM-DD HH:mm',
-      ).toDate(),
+      publicationDate: new Date(),
     });
 
     await this.offerRepository.save(offer);
@@ -65,10 +57,14 @@ export class OfferController {
   async updateOffer(@Param('id') id: string, @Body() body: SaveJobOfferDTO) {
     const offer = new JobOffer({
       ...body,
-      publicationDate: moment(body.publicationDate).toDate(),
+      publicationDate: new Date(),
+      // publicationDate: moment(body.publicationDate).toDate(),
     }).withId(id);
 
-    await this.offerRepository.find(new ByJobOfferId(id));
+    const [fetchedOffer] = await this.offerRepository.find(
+      new ByJobOfferId(id),
+    );
+    offer.withPublicationDate(fetchedOffer.publicationDate);
     await this.offerRepository.save(offer);
 
     return HttpResponse.success('Success').withData(formatJobOffer(offer));

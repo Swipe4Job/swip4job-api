@@ -58,8 +58,4 @@ export class SaveJobOfferDTO {
   @ApiProperty()
   @IsString()
   departmentOrganisation!: string;
-
-  @ApiProperty()
-  @IsString()
-  publicationDate!: string;
 }
