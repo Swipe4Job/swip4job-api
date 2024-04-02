@@ -19,7 +19,8 @@ import { ByJobOfferId } from '../../domain/ByJobOfferId';
 import { ApiTags } from '@nestjs/swagger';
 
 function formatJobOffer(offer: JobOffer) {
-  return offer.serialize();
+  const serializedOffer = offer.serialize();
+  return { ...serializedOffer, skills: JSON.parse(serializedOffer.skills) };
 }
 
 @ApiTags('offer')
