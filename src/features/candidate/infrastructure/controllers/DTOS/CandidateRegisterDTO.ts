@@ -2,56 +2,24 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 
-export class CandidateRegisterDTO {
-  @ApiProperty()
+export class StudyDTO {
   @IsString()
-  @IsNotEmpty()
-  candidateId!: string;
-
   @ApiProperty()
-  @IsString()
   @IsNotEmpty()
-  description!: string;
-
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  @ValidateNested({ each: true })
-  @Type(() => StudyDTO)
-  studies!: Array<StudyDTO>;
-
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  softSkills!: Array<string>;
-
-  @ApiProperty()
-  @IsOptional()
   name!: string;
-
-  @ApiProperty()
-  @IsString()
   @IsNotEmpty()
-  lastname!: string;
-
-  @ApiProperty()
   @IsString()
-  @IsNotEmpty()
-  location!: string;
-
   @ApiProperty()
-  @IsString()
+  school!: string;
   @IsNotEmpty()
-  @ValidateNested({ each: true })
-  @Type(() => LanguageDTO)
-  languages!: Array<LanguageDTO>;
-
+  @IsString()
   @ApiProperty()
-  @IsString()
+  startDate!: string;
   @IsNotEmpty()
-  @ValidateNested({ each: true })
-  @Type(() => JobExperienceDTO)
-  jobExperiences!: Array<JobExperienceDTO>;
+  @IsString()
+  @IsOptional()
+  @ApiProperty({ required: false })
+  endDate?: string;
 }
 
 export class LanguageDTO {
@@ -94,22 +62,54 @@ export class JobExperienceDTO {
   endDate?: string;
 }
 
-export class StudyDTO {
-  @IsString()
+export class CandidateRegisterDTO {
   @ApiProperty()
-  @IsNotEmpty()
-  name!: string;
-  @IsNotEmpty()
   @IsString()
+  @IsNotEmpty()
+  candidateId!: string;
+
   @ApiProperty()
-  school!: string;
-  @IsNotEmpty()
   @IsString()
+  @IsNotEmpty()
+  description!: string;
+
+  @ApiProperty({ type: [StudyDTO] })
+  @IsString()
+  @IsNotEmpty()
+  @ValidateNested({ each: true })
+  @Type(() => StudyDTO)
+  studies!: Array<StudyDTO>;
+
   @ApiProperty()
-  startDate!: string;
-  @IsNotEmpty()
   @IsString()
+  @IsNotEmpty()
+  softSkills!: Array<string>;
+
+  @ApiProperty()
   @IsOptional()
-  @ApiProperty({ required: false })
-  endDate?: string;
+  name!: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  lastname!: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  location!: string;
+
+  @ApiProperty({ type: [LanguageDTO] })
+  @IsString()
+  @IsNotEmpty()
+  @ValidateNested({ each: true })
+  @Type(() => LanguageDTO)
+  languages!: Array<LanguageDTO>;
+
+  @ApiProperty({ type: [JobExperienceDTO] })
+  @IsString()
+  @IsNotEmpty()
+  @ValidateNested({ each: true })
+  @Type(() => JobExperienceDTO)
+  jobExperiences!: Array<JobExperienceDTO>;
 }
