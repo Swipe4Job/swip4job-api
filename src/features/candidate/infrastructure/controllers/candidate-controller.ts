@@ -32,7 +32,7 @@ import { CandidateCVCriteria } from '../../domain/CandidateCVCriteria';
 
 @ApiTags('candidate')
 @Controller('candidate')
-export class CompanyController {
+export class CandidateController {
   constructor(
     private candidateCVCreate: CandidateRegister,
     private criteriaCodec: CriteriaCodec,

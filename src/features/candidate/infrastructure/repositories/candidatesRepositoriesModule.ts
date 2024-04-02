@@ -10,4 +10,4 @@ import { CandidateCVRepository } from '../../domain/CandidateCVRepository';
   imports: [SharedProvidersModule],
   exports: [CandidateCVRepository],
 })
-export class RepositoriesModule {}
+export class CandidatesRepositoriesModule {}

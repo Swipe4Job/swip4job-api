@@ -7,6 +7,7 @@ import { AuthModule } from '../features/auth/infrastructure/auth.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { CompanyControllersModule } from '../features/company/infrastructure/controllers/company-controllers.module';
 import { OfferControllersModule } from '../features/offer/infrastructure/offer-controllers.module';
+import { CandidatesControllersModule } from '../features/candidate/infrastructure/controllers/candidates-controllers.module';
 
 @Module({
   providers: [RequestLoggerMiddleware],
@@ -23,6 +24,7 @@ import { OfferControllersModule } from '../features/offer/infrastructure/offer-c
     ]),
     CompanyControllersModule,
     OfferControllersModule,
+    CandidatesControllersModule,
   ],
 })
 export class AppModule implements NestModule {
