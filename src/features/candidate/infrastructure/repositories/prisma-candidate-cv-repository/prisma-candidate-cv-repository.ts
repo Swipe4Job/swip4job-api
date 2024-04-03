@@ -71,7 +71,7 @@ export class PrismaCandidateCvRepository implements CandidateCVRepository {
           name: cv.name.value,
           lastname: cv.lastname.value,
           location: cv.location.value,
-          studies: JSON.stringify(cv.studies),
+          studies: JSON.stringify(cv.studies.map((s) => s.serialize())),
           languages: JSON.stringify(cv.languages.map((l) => l.serialize())),
           jobExperiences: JSON.stringify(
             cv.jobExperiences.map((j) => j.serialize()),
