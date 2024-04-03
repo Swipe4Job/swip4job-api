@@ -85,7 +85,6 @@ export class CandidateRegisterDTO {
   studies!: Array<StudyDTO>;
 
   @ApiProperty()
-  @IsString()
   @IsNotEmpty()
   softSkills!: Array<string>;
 
