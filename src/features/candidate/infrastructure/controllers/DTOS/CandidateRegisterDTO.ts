@@ -79,7 +79,6 @@ export class CandidateRegisterDTO {
   description!: string;
 
   @ApiProperty({ type: [StudyDTO] })
-  @IsString()
   @IsNotEmpty()
   @ValidateNested({ each: true })
   @Type(() => StudyDTO)
@@ -105,14 +104,12 @@ export class CandidateRegisterDTO {
   location!: string;
 
   @ApiProperty({ type: [LanguageDTO] })
-  @IsString()
   @IsNotEmpty()
   @ValidateNested({ each: true })
   @Type(() => LanguageDTO)
   languages!: Array<LanguageDTO>;
 
   @ApiProperty({ type: [JobExperienceDTO] })
-  @IsString()
   @IsNotEmpty()
   @ValidateNested({ each: true })
   @Type(() => JobExperienceDTO)
