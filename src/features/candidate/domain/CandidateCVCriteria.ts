@@ -6,7 +6,7 @@ import { FieldValidator } from '../../../shared/domain/Criteria/FieldValidator';
 export class CandidateCVCriteria extends Criteria {
   private allowedFilterFields = [
     'id',
-    'userId',
+    'candidateId',
     'description',
     'studies',
     'softSkills',
@@ -16,7 +16,7 @@ export class CandidateCVCriteria extends Criteria {
   ];
   private allowedOrderFields = [
     'id',
-    'userId',
+    'candidateId',
     'description',
     'studies',
     'softSkills',
